@@ -27,7 +27,7 @@ namespace Service.Business.Logging
 
                 _logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
-                .WriteTo.Console()
+                //.WriteTo.Console()
                 .WriteTo.File(
                     Path.Combine(logDirectory, $"system_log_.txt"),
                     rollingInterval: RollingInterval.Day, // Um arquivo de log por dia
