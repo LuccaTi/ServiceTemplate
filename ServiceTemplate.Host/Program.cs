@@ -20,27 +20,27 @@ namespace Service.Host
                 // Inicia o TopShelf
                 var exitCode = HostFactory.Run(hostConfig =>
                 {
-                    hostConfig.Service<ServiceWork>(serviceConfig =>
+                    hostConfig.Service<ServiceWork>(config =>
                     {
-                        serviceConfig.ConstructUsing(serviceWork => new ServiceWork());
-                        serviceConfig.WhenStarted((serviceWork, _) =>
+                        config.ConstructUsing(work => new ServiceWork());
+                        config.WhenStarted((work, _) =>
                         {
-                            Logger.Info("Program.cs", "WhenStarted", "Iniciando serviço...");
-                            serviceWork.StartService();
+                            Logger.Info("Program.cs", "WhenStarted", "Iniciando aplicação...");
+                            work.Start();
                             return true;
                         });
 
-                        serviceConfig.WhenStopped((serviceWork, _) =>
+                        config.WhenStopped((work, _) =>
                         {
-                            serviceWork.StopService();
-                            Logger.Info("Program.cs", "WhenStopped", $"Serviço encerrado!");
+                            work.Stop();
+                            Logger.Info("Program.cs", "WhenStopped", $"Aplicação encerrada!");
                             return true;
                         });
                     });
 
                     hostConfig.RunAsLocalSystem();
-                    hostConfig.SetServiceName("ServiceTemplate");
-                    hostConfig.SetDisplayName("ServiceTemplate");
+                    hostConfig.SetServiceName("Template");
+                    hostConfig.SetDisplayName("Template");
                     hostConfig.SetDescription("Modelo de serviço usado para criar serviços do windows.");
 
                 });
@@ -70,7 +70,7 @@ namespace Service.Host
 
             string timeStamp = DateTime.Now.Date.ToString("yyyyMMdd");
             string file = Path.Combine(fatalErrorDirectory, $"{timeStamp}_ERROR_.txt");
-            string errorMsg = $"{DateTime.Now} - Erro durante o startup do serviço: {exception.ToString()}{Environment.NewLine}";
+            string errorMsg = $"{DateTime.Now} - Erro durante o startup da aplicação: {exception.ToString()}{Environment.NewLine}";
             File.AppendAllText(file, errorMsg);
         }
     }

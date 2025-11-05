@@ -19,7 +19,7 @@ namespace Service.Business
         {
             try
             {
-                var interval = int.Parse(Config.Get("ServiceConfig:Interval"));
+                var interval = int.Parse(Config.Get("AppConfig:Interval"));
                 Logger.Info(_className, "Constructor", "Configurações carregadas!");
 
                 // Intervalo usado antes de iniciar o trabalho
@@ -28,7 +28,7 @@ namespace Service.Business
             }
             catch (Exception ex)
             {
-                Logger.Error(_className, "Constructor", $"Erro: {ex.ToString()}{Environment.NewLine}Sistema será encerrado pelo TopShelf!");
+                Logger.Error(_className, "Constructor", $"Erro: {ex.ToString()}{Environment.NewLine}Aplicação será encerrada pelo TopShelf!");
                 throw;
             }
         }
@@ -38,7 +38,7 @@ namespace Service.Business
         {
             try
             {
-                // Implementação de threads que vão executar as funcionalidades do serviço
+                // Implementação de threads que vão executar as funcionalidades da aplicação
                 // Task.Run ou new Thread();
             }
             catch (Exception ex)
@@ -47,30 +47,30 @@ namespace Service.Business
                 throw;
             }
         }
-        public void StartService()
+        public void Start()
         {
             try
             {
-                Logger.Info(_className, "StartService", "Serviço iniciado com sucesso!");
+                Logger.Info(_className, "Start", "Aplicação iniciada com sucesso!");
                 _timer.Start();
             }
             catch (Exception ex)
             {
-                Logger.Error(_className, "StartService", $"Erro: {ex.Message}");
+                Logger.Error(_className, "Start", $"Erro: {ex.Message}");
                 throw;
             }
 
         }
-        public void StopService()
+        public void Stop()
         {
             try
             {
-                Logger.Info(_className, "StopService", "Requisição para finalizar recebida, parando serviço...");
+                Logger.Info(_className, "Stop", "Requisição para finalizar recebida, parando aplicação...");
                 _timer.Stop();
             }
             catch (Exception ex)
             {
-                Logger.Error(_className, "StopService", $"Erro: {ex.Message}");
+                Logger.Error(_className, "Stop", $"Erro: {ex.Message}");
                 throw;
             }
         }

@@ -28,7 +28,7 @@ namespace Service.Business.Configuration
                     .Build();
 
                 // 2. Obter configs do Log
-                string logDirectory = _config["ServiceLogging:LogDirectory"] ?? "logs/Host".Replace(@"/", "\\");
+                string logDirectory = _config["AppLogging"] ?? "logs".Replace(@"/", "\\");
 
                 // 3. Configurar Serilog e inicializar logger
                 Logger.InitLogger(logDirectory);
@@ -37,7 +37,7 @@ namespace Service.Business.Configuration
             } 
             catch (Exception ex)
             {
-                throw new Exception("Ocorreu um erro ao carregar as configurações do sistema!", ex);
+                throw new Exception("Ocorreu um erro ao carregar as configurações da aplicação!", ex);
             }
         }
 
