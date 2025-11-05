@@ -53,3 +53,8 @@ Seções disponíveis:
 
 - **`ServiceConfig`**:
   - `Interval` (int): intervalo em milissegundos entre execuções do timer (padrão: 10000 = 10 segundos).
+
+## Uso e Instalação
+O código precisa ser compilado tanto em versão Debug quanto versão Release para gerar o executável, em seguida pode rodar como console ao 
+usar o .exe no terminal (cmd, por exemplo), também pode ser instalado ao adicionar o argumento "install", o mesmo se aplica para 
+desinstalá-lo, porém o argumento é "uninstall".
