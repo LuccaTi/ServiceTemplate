@@ -10,7 +10,7 @@ namespace Service.Business
 {
     public class ServiceWork
     {
-        #region Atributes
+        #region Attributes
         private const string _className = "ServiceWork";
         private System.Timers.Timer _timer;
         #endregion
@@ -20,15 +20,15 @@ namespace Service.Business
             try
             {
                 var interval = int.Parse(Config.Get("AppConfig:Interval"));
-                Logger.Info(_className, "Constructor", "Configurações carregadas!");
+                Logger.Info(_className, "Constructor", "Settings loaded!");
 
-                // Intervalo usado antes de iniciar o trabalho
+                // Interval used before starting the work
                 _timer = new System.Timers.Timer(interval);
                 _timer.Elapsed += CreateWorkThreads;
             }
             catch (Exception ex)
             {
-                Logger.Error(_className, "Constructor", $"Erro: {ex.ToString()}{Environment.NewLine}Aplicação será encerrada pelo TopShelf!");
+                Logger.Error(_className, "Constructor", $"Error: {ex.ToString()}{Environment.NewLine}Application will be terminated by TopShelf!");
                 throw;
             }
         }
@@ -38,12 +38,12 @@ namespace Service.Business
         {
             try
             {
-                // Implementação de threads que vão executar as funcionalidades da aplicação
-                // Task.Run ou new Thread();
+                // Implementation of threads that will execute the application functionalities
+                // Task.Run or new Thread();
             }
             catch (Exception ex)
             {
-                Logger.Error(_className, "CreateWorkThreads", $"Erro: {ex.Message}");
+                Logger.Error(_className, "CreateWorkThreads", $"Error: {ex.Message}");
                 throw;
             }
         }
@@ -51,12 +51,12 @@ namespace Service.Business
         {
             try
             {
-                Logger.Info(_className, "Start", "Aplicação iniciada com sucesso!");
+                Logger.Info(_className, "Start", "Application started successfully!");
                 _timer.Start();
             }
             catch (Exception ex)
             {
-                Logger.Error(_className, "Start", $"Erro: {ex.Message}");
+                Logger.Error(_className, "Start", $"Error: {ex.Message}");
                 throw;
             }
 
@@ -65,12 +65,12 @@ namespace Service.Business
         {
             try
             {
-                Logger.Info(_className, "Stop", "Requisição para finalizar recebida, parando aplicação...");
+                Logger.Info(_className, "Stop", "Request to stop received, stopping application...");
                 _timer.Stop();
             }
             catch (Exception ex)
             {
-                Logger.Error(_className, "Stop", $"Erro: {ex.Message}");
+                Logger.Error(_className, "Stop", $"Error: {ex.Message}");
                 throw;
             }
         }

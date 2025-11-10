@@ -11,13 +11,13 @@ namespace Service.Business.Logging
 {
     public static class Logger
     {
-        #region Atributes
+        #region Attributes
         private const string _className = "Logger";
         private static ILogger? _logger;
         #endregion
 
         #region Methods
-        // Inicializa o logger com padrão de level debug
+        // Initializes the logger with debug level as default
         public static void InitLogger(string logDirectory)
         {
             try
@@ -30,13 +30,13 @@ namespace Service.Business.Logging
                 //.WriteTo.Console()
                 .WriteTo.File(
                     Path.Combine(logDirectory, $"system_log_.txt"),
-                    rollingInterval: RollingInterval.Day, // Um arquivo de log por dia
-                    retainedFileCountLimit: null, // Null mantém os arquivos indefinidamente
-                    shared: true // Permite acompanhar em tempo real a escrita no log
+                    rollingInterval: RollingInterval.Day, // One log file per day
+                    retainedFileCountLimit: null, // Null keeps files indefinitely
+                    shared: true // Allows real-time log writing monitoring
                     )
                 .CreateLogger();
 
-                // Cria o logger universal do serilog
+                // Creates the universal Serilog logger
                 Log.Logger = _logger;
 
             }

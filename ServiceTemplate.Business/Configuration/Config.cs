@@ -11,7 +11,7 @@ namespace Service.Business.Configuration
 {
     public static class Config
     {
-        #region Atributes
+        #region Attributes
         private const string _className = "Config";
         private static IConfiguration? _config;
         #endregion
@@ -21,23 +21,23 @@ namespace Service.Business.Configuration
         {
             try
             {
-                // 1. Carregar appsettings.json
+                // 1. Load appsettings.json
                 _config = new ConfigurationBuilder()
                     .SetBasePath(AppContext.BaseDirectory)
                     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                     .Build();
 
-                // 2. Obter configs do Log
+                // 2. Get Log configurations
                 string logDirectory = _config["AppLogging"] ?? "logs".Replace(@"/", "\\");
 
-                // 3. Configurar Serilog e inicializar logger
+                // 3. Configure Serilog and initialize logger
                 Logger.InitLogger(logDirectory);
-                Logger.Info(_className, "LoadConfig", "Logger iniciado, carregando configurações...");
+                Logger.Info(_className, "LoadConfig", "Logger initialized, loading settings...");
 
             } 
             catch (Exception ex)
             {
-                throw new Exception("Ocorreu um erro ao carregar as configurações da aplicação!", ex);
+                throw new Exception("An error occurred while loading application settings!", ex);
             }
         }
 

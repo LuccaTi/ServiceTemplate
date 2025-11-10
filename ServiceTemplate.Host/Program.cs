@@ -17,7 +17,7 @@ namespace Service.Host
             {
                 Config.LoadConfig();
 
-                // Inicia o TopShelf
+                // Start TopShelf
                 var exitCode = HostFactory.Run(hostConfig =>
                 {
                     hostConfig.Service<ServiceWork>(config =>
@@ -25,7 +25,7 @@ namespace Service.Host
                         config.ConstructUsing(work => new ServiceWork());
                         config.WhenStarted((work, _) =>
                         {
-                            Logger.Info("Program.cs", "WhenStarted", "Iniciando aplicação...");
+                            Logger.Info("Program.cs", "WhenStarted", "Starting application...");
                             work.Start();
                             return true;
                         });
@@ -33,7 +33,7 @@ namespace Service.Host
                         config.WhenStopped((work, _) =>
                         {
                             work.Stop();
-                            Logger.Info("Program.cs", "WhenStopped", $"Aplicação encerrada!");
+                            Logger.Info("Program.cs", "WhenStopped", $"Application terminated!");
                             return true;
                         });
                     });
@@ -41,20 +41,20 @@ namespace Service.Host
                     hostConfig.RunAsLocalSystem();
                     hostConfig.SetServiceName("Template");
                     hostConfig.SetDisplayName("Template");
-                    hostConfig.SetDescription("Modelo de serviço usado para criar serviços do windows.");
+                    hostConfig.SetDescription("Service template used to create Windows services.");
 
                 });
 
-                // Para casos genéricos: (int)Convert.ChangeType(exitCode, exitCode.GetTypeCode());
+                // For generic cases: (int)Convert.ChangeType(exitCode, exitCode.GetTypeCode());
                 int exitCodeValue = (int)exitCode;
                 Environment.ExitCode = exitCodeValue;
                 Console.WriteLine($"ExitCode: {Environment.ExitCode}");
             }
             catch (Exception ex)
             {
-                // Encerra o serviço diante de erros não pegos pelo Topshelf no startup
+                // Terminates the service when errors are not caught by Topshelf at startup
                 HandleStartupError(ex);
-                Console.WriteLine($"{DateTime.Now} - Erro: {ex}");
+                Console.WriteLine($"{DateTime.Now} - Error: {ex}");
                 Environment.Exit(1);
             }
 
@@ -62,7 +62,7 @@ namespace Service.Host
 
         private static void HandleStartupError(Exception exception)
         {
-            // Cria um arquivo devido a chance do Logger não ter sido iniciado
+            // Creates a file due to the chance that the Logger may not have been initialized
 
             string fatalErrorDirectory = Path.Combine(AppContext.BaseDirectory, "StartupErrors");
             if (!Directory.Exists(fatalErrorDirectory))
@@ -70,7 +70,7 @@ namespace Service.Host
 
             string timeStamp = DateTime.Now.Date.ToString("yyyyMMdd");
             string file = Path.Combine(fatalErrorDirectory, $"{timeStamp}_ERROR_.txt");
-            string errorMsg = $"{DateTime.Now} - Erro durante o startup da aplicação: {exception.ToString()}{Environment.NewLine}";
+            string errorMsg = $"{DateTime.Now} - Error during application startup: {exception.ToString()}{Environment.NewLine}";
             File.AppendAllText(file, errorMsg);
         }
     }
