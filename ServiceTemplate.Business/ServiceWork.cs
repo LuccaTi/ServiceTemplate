@@ -1,12 +1,12 @@
-﻿using Service.Business.Configuration;
-using Service.Business.Logging;
+﻿using ServiceTemplate.Business.Configuration;
+using ServiceTemplate.Business.Logging;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using System.Reflection.Metadata.Ecma335;
 using System.Timers;
 
 
-namespace Service.Business
+namespace ServiceTemplate.Business
 {
     public class ServiceWork
     {

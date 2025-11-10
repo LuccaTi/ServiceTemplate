@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Serilog.Sinks.File;
 using Serilog.Events;
 
-namespace Service.Business.Logging
+namespace ServiceTemplate.Business.Logging
 {
     public static class Logger
     {

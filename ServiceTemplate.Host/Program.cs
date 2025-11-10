@@ -1,13 +1,13 @@
-﻿using Service.Business;
-using Service.Business.Configuration;
-using Service.Business.Logging;
+﻿using ServiceTemplate.Business;
+using ServiceTemplate.Business.Configuration;
+using ServiceTemplate.Business.Logging;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using System;
 using System.IO;
 using Topshelf;
 
-namespace Service.Host
+namespace ServiceTemplate.Host
 {
     internal class Program
     {

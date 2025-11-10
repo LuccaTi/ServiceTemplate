@@ -1,4 +1,4 @@
-﻿using Service.Business.Logging;
+﻿using ServiceTemplate.Business.Logging;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Service.Business.Configuration
+namespace ServiceTemplate.Business.Configuration
 {
     public static class Config
     {
