@@ -57,11 +57,11 @@ namespace ServiceTemplate.Business.Logging
                 throw;
             }
         }
-        public static void Info(string className, string methodName, string message)
+        public static void Info(string message)
         {
             try
             {
-                _logger!.Information($"{className} - {methodName} - {message}");
+                _logger!.Information(message);
             }
             catch (Exception)
             {

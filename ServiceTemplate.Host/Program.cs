@@ -25,7 +25,7 @@ namespace ServiceTemplate.Host
                         config.ConstructUsing(work => new ServiceWork());
                         config.WhenStarted((work, _) =>
                         {
-                            Logger.Info("Program.cs", "WhenStarted", "Starting application...");
+                            Logger.Info("Starting application...");
                             work.Start();
                             return true;
                         });
@@ -33,7 +33,7 @@ namespace ServiceTemplate.Host
                         config.WhenStopped((work, _) =>
                         {
                             work.Stop();
-                            Logger.Info("Program.cs", "WhenStopped", $"Application terminated!");
+                            Logger.Info("Application terminated!");
                             return true;
                         });
                     });

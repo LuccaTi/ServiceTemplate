@@ -32,7 +32,7 @@ namespace ServiceTemplate.Business.Configuration
 
                 // 3. Configure Serilog and initialize logger
                 Logger.InitLogger(logDirectory);
-                Logger.Info(_className, "LoadConfig", "Logger initialized, loading settings...");
+                Logger.Info("Logger initialized, loading settings...");
 
             } 
             catch (Exception ex)

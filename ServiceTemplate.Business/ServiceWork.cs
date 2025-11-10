@@ -20,7 +20,7 @@ namespace ServiceTemplate.Business
             try
             {
                 var interval = int.Parse(Config.Get("AppConfig:Interval"));
-                Logger.Info(_className, "Constructor", "Settings loaded!");
+                Logger.Info("Settings loaded!");
 
                 // Interval used before starting the work
                 _timer = new System.Timers.Timer(interval);
@@ -51,7 +51,7 @@ namespace ServiceTemplate.Business
         {
             try
             {
-                Logger.Info(_className, "Start", "Application started successfully!");
+                Logger.Info("Application started successfully!");
                 _timer.Start();
             }
             catch (Exception ex)
@@ -65,7 +65,7 @@ namespace ServiceTemplate.Business
         {
             try
             {
-                Logger.Info(_className, "Stop", "Request to stop received, stopping application...");
+                Logger.Info("Request to stop received, stopping application...");
                 _timer.Stop();
             }
             catch (Exception ex)
