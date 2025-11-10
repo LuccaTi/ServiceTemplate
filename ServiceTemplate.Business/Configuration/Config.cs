@@ -28,7 +28,7 @@ namespace ServiceTemplate.Business.Configuration
                     .Build();
 
                 // 2. Get Log configurations
-                string logDirectory = _config["AppLogging"] ?? "logs".Replace(@"/", "\\");
+                string logDirectory = _config["AppLogging:LogDirectory"] ?? "logs".Replace(@"/", "\\");
 
                 // 3. Configure Serilog and initialize logger
                 Logger.InitLogger(logDirectory);
@@ -41,6 +41,11 @@ namespace ServiceTemplate.Business.Configuration
             }
         }
 
+        /// <summary>
+        /// Get configuration parameter by key, if key is an object than parameter = "key:attribute" format
+        /// </summary>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
         public static string Get(string parameter)
         {
             try
