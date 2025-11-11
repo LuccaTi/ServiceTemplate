@@ -15,12 +15,12 @@ Funcionalidade de exemplo disponível:
 - Microsoft.Extensions.Configuration (leitura de `appsettings.json`)
 
 ## Estrutura do projeto
-- `Service.Host/Program.cs`: ponto de entrada; configura TopShelf, carrega configurações e inicializa o serviço.
-- `Service.Business/ServiceWork.cs`: classe principal que contém a lógica de negócio e o timer de execução.
-- `Service.Business/Configuration/Config.cs`: gerenciador centralizado de configurações via `appsettings.json`.
-- `Service.Business/Logging/Logger.cs`: inicialização e wrappers do Serilog com métodos `Debug`, `Info` e `Error`.
-- `Service.Library/Models/`: camada para modelos de dados (placeholder para futura implementação).
-- `Service.Host/appsettings.json`: configurações da aplicação (intervalo de execução, diretório de logs, níveis de log).
+- `ServiceTemplate.Host/Program.cs`: ponto de entrada; configura TopShelf, carrega configurações e inicializa o serviço.
+- `ServiceTemplate.Business/ServiceWork.cs`: classe principal que contém a lógica de negócio e o timer de execução.
+- `ServiceTemplate.Business/Configuration/Config.cs`: gerenciador centralizado de configurações via `appsettings.json`.
+- `ServiceTemplate.Business/Logging/Logger.cs`: inicialização e wrappers do Serilog com métodos `Debug`, `Info` e `Error`.
+- `ServiceTemplate.Library/Models/`: camada para modelos de dados (placeholder para futura implementação).
+- `ServiceTemplate.Host/appsettings.json`: configurações da aplicação (intervalo de execução, diretório de logs, níveis de log).
 
 ## Arquitetura e padrões de projeto
 - Hospedagem e ciclo de vida
@@ -30,9 +30,9 @@ Funcionalidade de exemplo disponível:
     - Callbacks de `WhenStarted` e `WhenStopped` para controle do ciclo de vida.
 
 - Separação de camadas
-    - **Service.Host**: responsável apenas pela hospedagem e bootstrap.
-    - **Service.Business**: contém toda a lógica de negócio, configuração e logging.
-    - **Service.Library**: camada para modelos compartilhados.
+    - **ServiceTemplate.Host**: responsável apenas pela hospedagem e bootstrap.
+    - **ServiceTemplate.Business**: contém toda a lógica de negócio, configuração e logging.
+    - **ServiceTemplate.Library**: camada para modelos compartilhados.
 
 - Logging (Serilog)
     - Logs em console e arquivo rolling diário em `logs/system_log_.txt` (diretório configurável).
@@ -40,18 +40,18 @@ Funcionalidade de exemplo disponível:
     - Em falhas na inicialização, um arquivo é escrito em `StartupErrors/` para garantir rastreabilidade mesmo antes do logger estar ativo.
 
 - Tratamento de erros
-    - Exceções no startup são capturadas e registradas em arquivo dedicado antes de encerrar com `Environment.Exit(1)`.
+    - Exceções no startup são capturadas e registradas em arquivo dedicado antes de encerrar com código de saída diferente de zero.
     - Exceções durante execução são logadas e re-lançadas para que o TopShelf gerencie adequadamente.
 
 ## Configuração
-Arquivo: `Service.Host/appsettings.json`
+Arquivo: `ServiceTemplate.Host/appsettings.json`
 
 Seções disponíveis:
-- **`ServiceLogging`**:
+- **`AppLogging`**:
   - `LogDirectory` (string): pasta para gravação dos logs (relativa ao diretório base da aplicação).
   - `LogLevel` (string): nível mínimo de log ("Debug", "Information", "Warning", "Error").
 
-- **`ServiceConfig`**:
+- **`AppConfig`**:
   - `Interval` (int): intervalo em milissegundos entre execuções do timer (padrão: 10000 = 10 segundos).
 
 ## Uso e Instalação
