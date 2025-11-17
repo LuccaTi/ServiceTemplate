@@ -14,6 +14,19 @@ namespace ServiceTemplate.Business.Configuration
         #region Attributes
         private const string _className = "Config";
         private static IConfiguration? _config;
+        private static bool _writeLogConsole;
+        private static int _interval;
+        #endregion
+
+        #region Properties
+        public static bool WriteLogConsole
+        {
+            get { return _writeLogConsole; }
+        }
+        public static int Interval
+        {
+            get { return _interval; }
+        }
         #endregion
 
         #region Methods
@@ -26,6 +39,7 @@ namespace ServiceTemplate.Business.Configuration
                     .SetBasePath(AppContext.BaseDirectory)
                     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                     .Build();
+                _writeLogConsole = Convert.ToBoolean(_config["AppConfig:WriteLogConsole"]);
 
                 // 2. Get Log configurations
                 string logDirectory = _config["AppLogging:LogDirectory"] ?? "logs".Replace(@"/", "\\");
@@ -34,7 +48,12 @@ namespace ServiceTemplate.Business.Configuration
                 Logger.InitLogger(logDirectory);
                 Logger.Info("Logger initialized, loading settings...");
 
-            } 
+                // 4. Log the loaded parameters
+                Logger.Debug(_className, "LoadConfig", $"WriteLogConsole: {_writeLogConsole}");
+
+                _interval = Convert.ToInt32(_config["AppConfig:Interval"]);
+                Logger.Debug(_className, "LoadConfig", $"Interval: {_interval} seconds");
+            }
             catch (Exception ex)
             {
                 throw new Exception("An error occurred while loading application settings!", ex);

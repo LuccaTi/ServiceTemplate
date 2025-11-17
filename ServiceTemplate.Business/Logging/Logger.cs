@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Serilog.Sinks.File;
 using Serilog.Events;
+using ServiceTemplate.Business.Configuration;
 
 namespace ServiceTemplate.Business.Logging
 {
@@ -25,16 +26,32 @@ namespace ServiceTemplate.Business.Logging
                 if (!Directory.Exists(logDirectory))
                     Directory.CreateDirectory(logDirectory);
 
-                _logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                //.WriteTo.Console()
-                .WriteTo.File(
-                    Path.Combine(logDirectory, $"system_log_.txt"),
-                    rollingInterval: RollingInterval.Day, // One log file per day
-                    retainedFileCountLimit: null, // Null keeps files indefinitely
-                    shared: true // Allows real-time log writing monitoring
-                    )
-                .CreateLogger();
+                if (Config.WriteLogConsole)
+                {
+                    _logger = new LoggerConfiguration()
+                    .MinimumLevel.Debug()
+                    .WriteTo.Console()
+                    .WriteTo.File(
+                        Path.Combine(logDirectory, $"system_log_.txt"),
+                        rollingInterval: RollingInterval.Day, // One log file per day
+                        retainedFileCountLimit: null, // Null keeps files indefinitely
+                        shared: true // Allows real-time log writing monitoring
+                        )
+                    .CreateLogger();
+                }
+                else
+                {
+                    _logger = new LoggerConfiguration()
+                    .MinimumLevel.Debug()
+                    //.WriteTo.Console()
+                    .WriteTo.File(
+                        Path.Combine(logDirectory, $"system_log_.txt"),
+                        rollingInterval: RollingInterval.Day, // One log file per day
+                        retainedFileCountLimit: null, // Null keeps files indefinitely
+                        shared: true // Allows real-time log writing monitoring
+                        )
+                    .CreateLogger();
+                }
 
                 // Creates the universal Serilog logger
                 Log.Logger = _logger;

@@ -1,8 +1,10 @@
-﻿using ServiceTemplate.Business;
-using ServiceTemplate.Business.Configuration;
-using ServiceTemplate.Business.Logging;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using ServiceTemplate.Business;
+using ServiceTemplate.Business.Configuration;
+using ServiceTemplate.Business.Interfaces;
+using ServiceTemplate.Business.Logging;
 using System;
 using System.IO;
 using Topshelf;
@@ -17,12 +19,17 @@ namespace ServiceTemplate.Host
             {
                 Config.LoadConfig();
 
+                // DI Container
+                var services = new ServiceCollection();
+                ConfigureServices(services);
+                var serviceProvider = services.BuildServiceProvider();
+
                 // Start TopShelf
                 var exitCode = HostFactory.Run(hostConfig =>
                 {
-                    hostConfig.Service<ServiceWork>(config =>
+                    hostConfig.Service<ServiceLifeCycleManager>(config =>
                     {
-                        config.ConstructUsing(work => new ServiceWork());
+                        config.ConstructUsing(work => serviceProvider.GetRequiredService<ServiceLifeCycleManager>());
                         config.WhenStarted((work, _) =>
                         {
                             Logger.Info("Starting application...");
@@ -36,7 +43,13 @@ namespace ServiceTemplate.Host
                             Logger.Info("Application terminated!");
                             return true;
                         });
+
                     });
+
+                    if (Config.WriteLogConsole)
+                    {
+                        hostConfig.UseSerilog();
+                    }
 
                     hostConfig.RunAsLocalSystem();
                     hostConfig.SetServiceName("Template");
@@ -58,6 +71,21 @@ namespace ServiceTemplate.Host
                 Environment.Exit(1);
             }
 
+        }
+
+        private static void ConfigureServices(IServiceCollection services)
+        {
+            try
+            {
+                services.AddSingleton<IServiceProcessingOrchestrator, ServiceProcessingOrchestrator>();
+                services.AddSingleton<IServiceProcessingEngine, ServiceProcessingEngine>();
+                services.AddSingleton<ServiceLifeCycleManager>();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Program.cs", "ConfigureServices", $"Error while configuring services: {ex.Message}");
+                throw;
+            }
         }
 
         private static void HandleStartupError(Exception exception)
