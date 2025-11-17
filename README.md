@@ -5,6 +5,8 @@ Este repositório contém um template de Serviço Windows construído com .NET 8
 
 O propósito é criar um "esqueleto" que sirva como base para a criação de serviços Windows que sigam um padrão tanto de implementação quanto de configuração e logging.
 
+A execução do trabalho é feita de forma assíncrona para maximizar a eficiência do uso dos recursos computacionais.
+
 Funcionalidade de exemplo disponível:
 - Timer configurável que executa threads de trabalho em intervalos definidos via `appsettings.json`.
 
@@ -13,10 +15,13 @@ Funcionalidade de exemplo disponível:
 - TopShelf (hospedagem e instalação de serviços Windows)
 - Serilog (logging para console e arquivo)
 - Microsoft.Extensions.Configuration (leitura de `appsettings.json`)
+- Microsoft.Extensions.DependencyInjection
 
 ## Estrutura do projeto
 - `ServiceTemplate.Host/Program.cs`: ponto de entrada; configura TopShelf, carrega configurações e inicializa o serviço.
-- `ServiceTemplate.Business/ServiceWork.cs`: classe principal que contém a lógica de negócio e o timer de execução.
+- `ServiceTemplate.Business/ServiceLifeCycleManager.cs`: classe principal que controla o ciclo de vida do serviço.
+- `ServiceTemplate.Business/ServiceProcessingOrchestrator.cs`: classe responsável por controlar o fluxo do trabalho.
+- `ServiceTemplate.Business/ServiceProcessingEngine.cs`: classe que vai obter os dados e aplicar a lógica de negócio.
 - `ServiceTemplate.Business/Configuration/Config.cs`: gerenciador centralizado de configurações via `appsettings.json`.
 - `ServiceTemplate.Business/Logging/Logger.cs`: inicialização e wrappers do Serilog com métodos `Debug`, `Info` e `Error`.
 - `ServiceTemplate.Library/Models/`: camada para modelos de dados (placeholder para futura implementação).
@@ -42,6 +47,7 @@ Funcionalidade de exemplo disponível:
 - Tratamento de erros
     - Exceções no startup são capturadas e registradas em arquivo dedicado antes de encerrar com código de saída diferente de zero.
     - Exceções durante execução são logadas e re-lançadas para que o TopShelf gerencie adequadamente.
+    - Exceções de operações canceladas são propagadas porque servem como sinalização (metodologia assíncrona).
 
 ## Configuração
 Arquivo: `ServiceTemplate.Host/appsettings.json`
@@ -53,6 +59,7 @@ Seções disponíveis:
 
 - **`AppConfig`**:
   - `Interval` (int): intervalo em milissegundos entre execuções do timer (padrão: 10000 = 10 segundos).
+  - `WriteLogConsole`: flag que indica se o serviço deve registrar os logs no console assim como faz nos arquivos.
 
 ## Uso e Instalação
 O código precisa ser compilado tanto em versão Debug quanto versão Release para gerar o executável, em seguida pode rodar como console ao 
