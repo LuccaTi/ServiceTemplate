@@ -49,14 +49,11 @@ namespace ServiceTemplate.Business.Configuration
                 Logger.Info("Logger initialized, loading settings...");
 
                 // 4. Log the loaded parameters
-                Logger.Debug(_className, "LoadConfig", $"WriteLogConsole: {_useSerilog}");
-
-                _interval = Convert.ToInt32(_config["AppConfig:Interval"]);
-                Logger.Debug(_className, "LoadConfig", $"Interval: {_interval} seconds");
-
                 _useSerilog = Convert.ToBoolean(_config["AppConfig:UseSerilog"]);
                 Logger.Debug(_className, "LoadConfig", $"UseSerilog: {_useSerilog}");
 
+                _interval = Convert.ToInt32(_config["AppConfig:Interval"]);
+                Logger.Debug(_className, "LoadConfig", $"Interval: {_interval} seconds");
             }
             catch (Exception ex)
             {
