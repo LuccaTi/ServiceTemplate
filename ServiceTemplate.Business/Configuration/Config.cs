@@ -14,14 +14,14 @@ namespace ServiceTemplate.Business.Configuration
         #region Attributes
         private const string _className = "Config";
         private static IConfiguration? _config;
-        private static bool _writeLogConsole;
+        private static bool _useSerilog;
         private static int _interval;
         #endregion
 
         #region Properties
-        public static bool WriteLogConsole
+        public static bool UseSerilog
         {
-            get { return _writeLogConsole; }
+            get { return _useSerilog; }
         }
         public static int Interval
         {
@@ -39,7 +39,7 @@ namespace ServiceTemplate.Business.Configuration
                     .SetBasePath(AppContext.BaseDirectory)
                     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                     .Build();
-                _writeLogConsole = Convert.ToBoolean(_config["AppConfig:WriteLogConsole"]);
+                _useSerilog = Convert.ToBoolean(_config["AppConfig:WriteLogConsole"]);
 
                 // 2. Get Log configurations
                 string logDirectory = _config["AppLogging:LogDirectory"] ?? "logs".Replace(@"/", "\\");
@@ -49,10 +49,14 @@ namespace ServiceTemplate.Business.Configuration
                 Logger.Info("Logger initialized, loading settings...");
 
                 // 4. Log the loaded parameters
-                Logger.Debug(_className, "LoadConfig", $"WriteLogConsole: {_writeLogConsole}");
+                Logger.Debug(_className, "LoadConfig", $"WriteLogConsole: {_useSerilog}");
 
                 _interval = Convert.ToInt32(_config["AppConfig:Interval"]);
                 Logger.Debug(_className, "LoadConfig", $"Interval: {_interval} seconds");
+
+                _useSerilog = Convert.ToBoolean(_config["AppConfig:UseSerilog"]);
+                Logger.Debug(_className, "LoadConfig", $"UseSerilog: {_useSerilog}");
+
             }
             catch (Exception ex)
             {

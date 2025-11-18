@@ -46,7 +46,7 @@ namespace ServiceTemplate.Host
 
                     });
 
-                    if (Config.WriteLogConsole)
+                    if (Config.UseSerilog)
                     {
                         hostConfig.UseSerilog();
                     }
