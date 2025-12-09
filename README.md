@@ -37,8 +37,8 @@ Funcionalidade de exemplo disponível:
     - **ServiceTemplate.Library**: camada para modelos compartilhados.
 
 - Logging (Serilog)
-    - Logs em console e arquivo rolling diário em `logs/system_log_.txt` (diretório configurável).
-    - Em falhas na inicialização, um arquivo é escrito na pasta `logs` (diretório base da aplicação) usando um bootstrap logger para garantir rastreabilidade mesmo antes do logger principal estar ativo.
+    - Logs em console e arquivo rolling diário em `logs/system_log_.txt`, a pasta `logs` fica no diretório base da aplicação.
+    - Em falhas na inicialização, um arquivo é escrito na pasta logs usando um bootstrap logger para garantir rastreabilidade mesmo antes do logger principal estar ativo.
 
 - Tratamento de erros
     - Exceções no startup são capturadas e registradas em arquivo dedicado antes de encerrar a aplicação.
@@ -54,7 +54,7 @@ Seções disponíveis:
 
 - **`Serilog`**:
   - `MinimumLevel` (string): nível mínimo de log ("Debug", "Information", "Warning", "Error").
-  - `WriteTo` (string): definição de onde o log será escrito.
+  - `WriteTo` (string): determina que o log também é escrito no console.
 
 
 ## Uso e Instalação
