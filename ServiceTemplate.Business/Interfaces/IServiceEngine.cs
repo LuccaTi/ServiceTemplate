@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace ServiceTemplate.Business.Interfaces
 {
-    public interface IServiceProcessingOrchestrator
+    public interface IServiceEngine
     {
-        public Task EventHandlerAsync();
-        public void SignalStop();
+        public Task ProcessAsync(CancellationToken cancellationToken);
     }
 }
